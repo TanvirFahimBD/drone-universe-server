@@ -92,7 +92,7 @@ async function run() {
     });
 
     //Orders Specific GET API
-    app.get("/orders", async (req, res) => {
+    app.get("/orders/users", async (req, res) => {
       const email = req.query.email;
       const query = { email: email };
       console.log(query);
@@ -111,6 +111,7 @@ async function run() {
     //orders DELETE API
     app.delete("/orders/:id", async (req, res) => {
       const id = req.params.id;
+      console.log("body", req.body);
       const query = { _id: ObjectId(id) };
       const result = await orderCollection.deleteOne(query);
       console.log("delete id", id);
@@ -119,13 +120,13 @@ async function run() {
     });
 
     //Orders UPDATE API
-    // app.put("/orders", async (req, res) => {
-    //   const user = req.body;
-    //   const filter = { email: user.email };
-    //   const updateDoc = { $set: { status: "shipped" } };
-    //   const result = await orderCollection.updateOne(filter, updateDoc);
-    //   res.json(result);
-    // });
+    app.put("/orders", async (req, res) => {
+      const user = req.body;
+      const filter = { email: user.email };
+      const updateDoc = { $set: { status: "shipped" } };
+      const result = await orderCollection.updateOne(filter, updateDoc);
+      res.json(result);
+    });
 
     //users POST API
     app.post("/users", async (req, res) => {
