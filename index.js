@@ -91,7 +91,7 @@ async function run() {
       res.json(result);
     });
 
-    //Orders Specific GET API
+    //Orders Specific email GET API
     app.get("/orders/users", async (req, res) => {
       const email = req.query.email;
       const query = { email: email };
@@ -108,23 +108,37 @@ async function run() {
       res.json(result);
     });
 
-    //orders DELETE API
-    app.delete("/orders/:id", async (req, res) => {
+    // orders specific id GET API
+    app.get("/orders/:id", async (req, res) => {
       const id = req.params.id;
-      console.log("body", req.body);
       const query = { _id: ObjectId(id) };
-      const result = await orderCollection.deleteOne(query);
-      console.log("delete id", id);
-      console.log("result", result);
+      const result = await orderCollection.findOne(query);
+      console.log("id of order", id);
       res.json(result);
     });
 
-    //Orders UPDATE API
-    app.put("/orders", async (req, res) => {
-      const user = req.body;
-      const filter = { email: user.email };
-      const updateDoc = { $set: { status: "shipped" } };
-      const result = await orderCollection.updateOne(filter, updateDoc);
+    //orders UPDATE API
+    app.put("/orders/:id", (req, res) => {
+      const id = req.params.id;
+      const updatedStatus = req.body.status;
+      console.log(updatedStatus);
+      const filter = { _id: ObjectId(id) };
+      orderCollection
+        .updateOne(filter, {
+          $set: { status: updatedStatus },
+        })
+        .then((result) => {
+          res.json(result);
+        });
+    });
+
+    //orders DELETE API
+    app.delete("/orders/:id", async (req, res) => {
+      const result = await orderCollection.deleteOne({
+        _id: ObjectId(req.params.id),
+      });
+      console.log(" del", req.params.id);
+      console.log("result ", result);
       res.json(result);
     });
 
