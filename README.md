@@ -26,6 +26,7 @@
 <li>React</li>
 <li>React router</li>
 <li>Firebase</li>
+<li>Firebase Authentication</li>
 <li>Node JS</li>
 <li>Express</li>
 <li>Mongodb</li>
